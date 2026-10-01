@@ -152,7 +152,8 @@ def plover_cyt():
     resultat=""
     for i in sept:
         resultat+=i
-        resultat+=diamond[p]+"\n"
+        resultat+=diamond[p-1]
+        resultat+=trefle[p-8]+"\n"
         p+=1
     print(resultat)
 plover_cyt()

@@ -10,7 +10,7 @@ from Hyrule import Hyrule
 from Mordudumordor import Mordudumordor
 from Ganondorf import Ganondorf
 
-debug_mode = True
+debug_mode = False
 Hero = None
 carte_choisie = None
 

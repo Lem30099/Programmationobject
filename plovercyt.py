@@ -1,6 +1,6 @@
 import random
 import time
-def clovercyt():
+def plovercyt():
     proba = [60, 40, 20, 10, 5]
     class symbole():
         def __init__(self,multiplicator,valor,name,modificator):
@@ -27,15 +27,15 @@ def clovercyt():
             return self.nom
         def __str__(self):
             return (
-                f"{self.nom} | valeur : {self.valeur:.2f} € "
-                f"| multiplicateur : x{self.multiplicateur:.2f}"
+                f"{self.nom} | valeur : {self.valeur} € "
+                f"| multiplicateur : x{self.multiplicateur}"
             )
     symboles = {
-        "trefle": symbole(1.5, 5, "trefle", None),
-        "citron": symbole(1, 5, "citron", None),
-        "cloche": symbole(1, 7.5, "cloche", None),
-        "diamand": symbole(1.75, 10, "diamand", None),
-        "sept": symbole(2, 15, "sept", None),
+        "trefle": symbole(1, 7.5, "trefle", None),
+        "citron": symbole(1, 10, "citron", None),
+        "cloche": symbole(1, 15, "cloche", None),
+        "diamand": symbole(1, 20, "diamand", None),
+        "sept": symbole(1, 50, "sept", None),
     }
     def aleascii(n):
         trefle = [
@@ -157,10 +157,10 @@ def clovercyt():
         return aleascii(random.choices(range(5),proba,k=1)[0])
     def tour_ascii(somme,dette):
         if somme < dette:
-            print(f"Solde insuffisant : {somme:.2f} € disponibles, {dette:.2f} € nécessaires.")
+            print(f"argent insuffisant : {somme} € disponibles, {dette} € nécessaires.")
             return None
         somme -= dette
-        print(f"Mise du tour : {dette:.2f} € | Solde après paiement : {somme:.2f} €")
+        print(f"Mise du tour : {dette} € ; argent après paiement : {somme} €")
         time.sleep(10)
         resultat=""
         p=0
@@ -347,10 +347,16 @@ def clovercyt():
             print(f"Total des gains de ce tour : {gains} €")
         print()
         return somme
+    def restart():
+        restart=int(input("continuer de jouer 1? 1 oui, 2 non"))
+        if restart==2:
+            plovercyt()
+        elif restart!=1:
+            print("TU VEUX JOUER AVEC MOI, LE DIVIN CRéATEUR")
+            time.sleep(1000000000000000000000000000000000000000000000000000)
     def boutique_ameliorations(somme):
-        """Propose une amélioration payante après chaque série de 5 tours."""
-        print("\n===== BOUTIQUE D'AMÉLIORATIONS =====")
-        print(f"Ton solde : {somme:.2f} €")
+        print("BOUTIQUE D'AMÉLIORATIONS")
+        print(f"Ton argent : {somme} €")
         print("Choisis le symbole à améliorer :")
         noms = list(symboles.keys())
         for numero, nom in enumerate(noms, start=1):
@@ -359,30 +365,31 @@ def clovercyt():
             choix = int(input("Numéro du symbole (0 pour passer) : "))
         except ValueError:
             print("Choix invalide : aucune amélioration achetée.")
-            return somme
+            boutique_ameliorations(somme)
         if choix == 0:
             print("Tu passes ton tour à la boutique.")
+            restart()
             return somme
         if choix < 1 or choix > len(noms):
             print("Ce symbole n'existe pas.")
-            return somme
+            boutique_ameliorations(somme)
         symbole_choisi = symboles[noms[choix - 1]]
-        print("\nQue veux-tu améliorer ?")
+        print("Que veux-tu améliorer ?")
         print("1. Augmenter la valeur de 2 €")
         print("2. Augmenter le multiplicateur de 0.25")
         try:
             type_amelioration = int(input("Ton choix : "))
         except ValueError:
-            print("Choix invalide : aucune amélioration achetée.")
-            return somme
-        # Le prix est calculé à partir de get_valeur(), comme demandé.
+            print("aucune amélioration achetée.")
+            restart()
+            boutique_ameliorations(somme)
         prix = symbole_choisi.get_valeur() * 5
         if type_amelioration not in (1, 2):
             print("Amélioration inconnue.")
-            return somme
+            boutique_ameliorations(somme)
         if somme < prix:
-            print(f"Pas assez d'argent : l'amélioration coûte {prix:.2f} €.")
-            return somme
+            print(f"Pas assez d'argent, l'amélioration coûte {prix} €.")
+            boutique_ameliorations(somme)
         somme -= prix
         if type_amelioration == 1:
             symbole_choisi.set_valeur(symbole_choisi.get_valeur() + 2)
@@ -390,9 +397,10 @@ def clovercyt():
             symbole_choisi.set_multiplicateur(
                 symbole_choisi.get_multiplicateur() + 0.25
             )
-        print(f"Amélioration achetée pour {prix:.2f} €.")
+        print(f"Amélioration achetée pour {prix} €.")
         print(f"Nouvelles caractéristiques : {symbole_choisi}")
-        print(f"Solde restant : {somme:.2f} €")
+        print(f"Solde restant : {somme} €")
+        restart()
         return somme
     def print_ascii(somme, dette):
         nombre_tours = 0
@@ -400,41 +408,41 @@ def clovercyt():
         dette_totale = 0
         gains_cumules = 0
         print("Objectif : récupérer au moins autant d'argent que le total des mises.")
-        print(f"Solde de départ : {somme:.2f} € | Première mise : {dette:.2f} €\\n")
+        print(f"Solde de départ : {somme} € | Première mise : {dette} €")
         while nombre_tours < tours_max:
-            if somme < dette:
-                print("DÉFAITE ! Tu n'as plus assez d'argent pour payer la prochaine mise.")
+            if somme < 0:
+                print("Tu n'as plus assez d'argent pour payer la prochaine mise, looser ಠ_ಠ")
                 break
             mise_du_tour = dette
             dette_totale += mise_du_tour
             solde_avant_tour = somme
             nouveau_solde = tour_ascii(somme, mise_du_tour)
             if nouveau_solde is None:
-                print("DÉFAITE ! Mise impossible.")
+                print("Mise impossible, looser ಠ_ಠ")
                 break
             gains_du_tour = nouveau_solde - (solde_avant_tour - mise_du_tour)
             gains_cumules += gains_du_tour
             somme = nouveau_solde
             nombre_tours += 1
             print(f"Tour {nombre_tours}/{tours_max}")
-            print(f"Solde : {somme:.2f} €")
-            print(f"Gains cumulés : {gains_cumules:.2f} €")
-            print(f"Mises cumulées : {dette_totale:.2f} €")
+            print(f"Solde : {somme} €")
+            print(f"Gains cumulés : {gains_cumules} €")
+            print(f"Mises cumulées : {dette_totale} €")
             if nombre_tours % 5 == 0 and nombre_tours < tours_max:
-                dette *= 1.5
-                print(f"Nouvelle mise pour les prochains tours : {dette:.2f} €")
+                dette *= 1.25
+                print(f"Nouvelle mise pour les prochains tours : {dette} €")
                 somme = boutique_ameliorations(somme)
-        print("\\n===== FIN DE LA PARTIE =====")
+        print("FIN")
         print(f"Nombre de tours joués : {nombre_tours}/{tours_max}")
-        print(f"Total des gains : {gains_cumules:.2f} €")
-        print(f"Total des mises accumulées : {dette_totale:.2f} €")
-        print(f"Solde restant : {somme:.2f} €")
+        print(f"Total des gains : {gains_cumules} €")
+        print(f"Total des mises accumulées : {dette_totale} €")
+        print(f"Solde restant : {somme} €")
         if nombre_tours == tours_max and gains_cumules >= dette_totale:
-            print("VICTOIRE ! Tes gains couvrent toutes les mises accumulées.")
+            print("Tes gain couvrent toutes les mises accumulés, bien joué ദ്ദി(•ᴗ•)")
         else:
-            print("DÉFAITE ! Tes gains ne couvrent pas toutes les mises accumulées.")
+            print("Tes gain ne couvrent pas toutes les mises accumulés, looser ಠ_ಠ")
         return somme
     somme = 1000
-    dette = 100
+    dette = 50
     print_ascii(somme, dette)
-clovercyt()
+plovercyt()

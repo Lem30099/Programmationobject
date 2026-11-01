@@ -157,7 +157,7 @@ def combat_ganondorf():
         print("La princesse Zelda est sauvée !")
         print('Tu peux maintenant construire et vivre paisblement dans ton chateau')
         print("Mais quelque chose t'intrigue dans le Chateau de Ganondorf")
-        print("Il s'agit d'un miroir mais qui est bizarre. Tu remarque qeu tu me passer la main à travers")
+        print("Il s'agit d'un miroir mais qui est bizarre. Tu remarque que tu peux passer la main à travers")
         print("Tu décides alors de passer entièrement dans le miroir...")
         mon_sleep(3)
         subprocess.run(["cmd", "/c", "cls"] if os.name == "nt" else ["clear"], check=False)
@@ -335,7 +335,7 @@ def mordudumordor():
             if combat_sauronchon():
                 print("\nTu peux maintenant detruire l'Anneau Unique !")
                 print("Maintenant, il faut jeter l'Anneau dans la Montagne de Dustin")
-                print("Après avoir jeter l'Anneu vous avez réussit la mission vous voila récompenser avec le meilleur fromage du royaume mes félicitations")
+                print("Après avoir jeter l'Anneau vous avez réussit la mission vous voila récompenser avec le meilleur fromage du royaume mes félicitations")
                 mon_sleep(3)
                 print('A une prochaine jeune aventurier')
                 mon_sleep(2)
@@ -343,7 +343,7 @@ def mordudumordor():
                 amazon_city_builder()
                 break
         else:
-            print("Gandébile se met a crier et POUF tu tombes dans un long trou")
+            print("Gandébile se met a crier et POUF tu tombes dans un long trou par peur")
             mon_sleep(2)
             subprocess.run(["cmd", "/c", "cls"] if os.name == "nt" else ["clear"], check=False)
             # clover_cyt()  # À ajouter quand tu auras la fonction
